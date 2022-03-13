@@ -1,10 +1,14 @@
 {
-  "name": "occcad",
+  "name": "webcad",
   "version": "1.0.0",
-  "description": "",
+  "description": "在Web中实现CAD的功能",
   "main": "index.js",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "build-debug": "webpack --mode=development --devtool=source-map",
+    "build": "webpack --mode=production"
+  },
   "dependencies": {
     "opencascade.js": "^2.0.0-beta.dd8ce1a",
     "three": "^0.138.3"
@@ -12,6 +16,12 @@
   "devDependencies": {
     "@types/three": "^0.138.0",
     "file-loader": "^6.2.0",
-    "ts-loader": "^9.2.8"
+    "ts-loader": "^9.2.8",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/CWBOY/web-cad.git"
   }
 }

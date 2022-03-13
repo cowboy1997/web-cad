@@ -4,7 +4,6 @@ module.exports = {
   output: {
     filename: "./app.js",
   },
-  devtool: "source-map",
   mode: "development",
   module: {
     rules: [
