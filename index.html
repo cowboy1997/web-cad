@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>WasmOCC_Demo</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            color: #202020;
+            font-size: 20px;
+            margin-top: -30px;
+            margin-left: -40px;
+        }
+    </style>
+</head>
+
+<body id="body">
+
+    
+    <div class="top-bar">
+        <div id="topnav" class="topnav">
+            <!-- <a href="#" title="Save Project to .json" onmouseup="saveProject();">Save Project</a>
+            <a href="#" title="Load Project from .json" onmouseup="loadProject();">Load Project</a>
+            <a href="#" onmouseup="threejsViewport.saveShapeSTEP();">Save STEP</a>
+            <a href="#" onmouseup="threejsViewport.saveShapeSTL();">Save STL</a>
+            <a href="#" onmouseup="threejsViewport.saveShapeOBJ();">Save OBJ</a> -->
+            <label id="fileInput" for="files" title="Import STEP, IGES, or (ASCII) STL from File">Import STEP/IGES/STL
+                <input id="files" name="files" type="file" accept=".iges,.step,.igs,.stp,.stl" multiple style="display:none;" oninput="loadFiles();"/>
+            </label>
+            <!-- <a href="#" title="Clears the external step/iges/stl files stored in the project." onmouseup="clearExternalFiles();">Clear Imported Files</a> -->
+        </div>
+    </div>
+
+    <div class="center-bar">
+        <div class="center-group">
+            <button class="opt-btn" id="DrawLine">
+                <img src="icon/Sketcher_CreateLine_Constr.svg">
+            </button>
+            <button class="opt-btn" id="DrawRect">
+                <img src="icon/Sketcher_CreateRectangle_Constr.svg">
+            </button>
+            <button class="opt-btn" id="DrawArcOfCircle">
+                <img src="icon/Sketcher_Create3PointArc_Constr.svg">
+            </button>
+            <button class="opt-btn" id="DrawCircle">
+                <img src="icon/Sketcher_CreateCircle_Constr.svg">
+            </button>
+            <button class="opt-btn" id="DrawEllipse">
+                <img src="icon/Sketcher_CreateEllipse_Constr.svg">
+            </button>
+            <button class="opt-btn" id="DrawBSpline">
+                <img src="icon/Sketcher_CreateBSpline_Constr.svg">
+            </button>
+        </div>
+    </div>
+    <p id="loading">loading wasm......</p>
+
+    <script type="text/javascript" src="./dist/app.js"> </script>
+</body>
+
+</html>

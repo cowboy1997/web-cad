@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "es2015",
+    "sourceMap": true,
+    "outDir":"./js",
+    "rootDir": "./src"	,
+    "moduleResolution": "node"
+  },
+  "include":[
+    "./src/**/*.ts", "src/Operation/DrawRectOperationts",
+  ]
+}

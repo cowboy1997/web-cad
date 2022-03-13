@@ -1,0 +1,132 @@
+* {
+    margin: 0;
+    padding: 0;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+      user-select:none;
+}
+
+
+body {
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+.fl {
+    float: left;
+}
+button {
+    outline: none;
+    border: 0;
+}
+.top-bar {
+    height: 40px;
+    line-height: 40px;
+    background-color: #262626;
+    color: #E0E0E0;
+    min-width: 540px;
+
+}
+
+/* .top-logo {
+    height: 40px;
+    width: 128px;
+} */
+
+
+
+.top-nav{
+    min-width: 393px;
+    margin-top: 8px;
+}
+.top-nav button {
+    background-color: transparent;
+    color: #E0E0E0;
+    border-radius: 2px;
+    margin-left: 20px;
+    padding: 3px 15px;
+    float: left;
+}
+
+.top-nav button:hover {
+    background-color: #A8A8A8;
+}
+.top-menu-div:hover .top-menu-content{
+    display: block;
+}
+
+.center-bar {
+    background-color: #434343;
+    min-width: 1294px;
+    height: 38px;
+}
+
+.center-group{
+    margin: 0;
+}
+
+.opt-btn {
+    width: 32px;
+    height: 32px;
+    margin-left: 4px;
+    margin-top: 2px;
+    background-color: transparent;
+    border-radius: 6px;
+    background-color: #666666;
+    overflow: hidden;
+}
+
+.opt-btn:hover {
+    background-color: rgba(0, 140, 255, 0.8);
+}
+.opt-btn:active {
+    background-color: #A8A8A8;
+}
+.opt-btn img {
+    margin: 0;
+    width: 32px;
+    height: 32px;
+
+}
+
+
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: #111;
+    overflow: hidden;
+  }
+  
+  /* Style the links inside the navigation bar */
+  .topnav a, .topnav label {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 4px 16px;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: Consolas;
+  }
+  
+  /* Change the color of links on hover */
+  .topnav a:hover, .topnav label:hover {
+    background-color: #aaa;
+    color: black;
+  }
+  
+  /* Add a color to the active/current link */
+  .topnav a.active, label.active {
+    background-color: #4CAF50;
+    color: white;
+  }
