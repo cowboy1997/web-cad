@@ -1,7 +1,4 @@
 
-const path = require('path');
-const fs = require('fs');
-
 module.exports = {
   entry: "./src/index.ts",
   output: {
@@ -18,11 +15,7 @@ module.exports = {
       {
         test: /\.wasm$/,
         type: "javascript/auto",
-        loader: "file-loader",
-        options: {
-          publicPath: "../",
-          outputPath: "../",
-        },
+        loader: "file-loader"
       },
     ],
   },

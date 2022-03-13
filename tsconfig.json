@@ -8,6 +8,6 @@
     "moduleResolution": "node"
   },
   "include":[
-    "./src/**/*.ts", "src/Operation/DrawRectOperationts",
+    "./src/**/*.ts",
   ]
 }
