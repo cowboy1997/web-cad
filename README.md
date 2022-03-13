@@ -1,7 +1,7 @@
 # WebCad
 
 #### 介绍
-在Web中实现CAD的功能，暂时实现简单的草图绘制
+在Web中实现CAD的功能，暂时实现简单的草图绘制。项目预览https://cowboy1997.github.io/web-cad/
 
 #### 软件架构
 软件架构说明
