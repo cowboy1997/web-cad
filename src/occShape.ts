@@ -393,6 +393,7 @@ export class occShape {
             triangulations.push(myT);
         }
 
+        //
         // Scale each face's UVs to Worldspace and pack them into a 0-1 Atlas with potpack
         // let padding = 2;
         // for (let f = 0; f < uv_boxes.length; f++) { uv_boxes[f].w += padding; uv_boxes[f].h += padding; }

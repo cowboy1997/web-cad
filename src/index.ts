@@ -4,21 +4,13 @@ import initOpenCascade from "opencascade.js";
 import { OperationType } from "./Operation/OperationType";
 
 
-
-
-
 let app = new occApp();
-
 init();
-
-
-
 function init() {
     initOpenCascade().then(oc => {
         occApp.oc = oc;
         document.getElementById('loading').style.display = 'none';
     });
-
     document.getElementById("fileInput").addEventListener('input', async (event) => {
         let srcElement: any = event.srcElement;
         occApp.loadFiles(srcElement.files);
@@ -28,6 +20,5 @@ function init() {
         if (element) {
             element.onclick = function () {occApp.runCommand(type); }
         }
-
     }
 }
