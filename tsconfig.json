@@ -9,5 +9,8 @@
   },
   "include":[
     "./src/**/*.ts",
+  ],
+  "files": [
+    "./lib/dwg/DwgApi.d.ts"
   ]
 }

@@ -10,10 +10,12 @@
     "build": "webpack --mode=production"
   },
   "dependencies": {
+    "dxf-parser": "^1.1.2",
     "opencascade.js": "^2.0.0-beta.dd8ce1a",
     "three": "^0.138.3"
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.14",
     "@types/three": "^0.138.0",
     "file-loader": "^6.2.0",
     "ts-loader": "^9.2.8",

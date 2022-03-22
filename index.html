@@ -16,6 +16,7 @@
             margin-left: -40px;
         }
     </style>
+     <script src="lib/jquery.js"></script>
 </head>
 
 <body id="body">
@@ -23,15 +24,9 @@
     
     <div class="top-bar">
         <div id="topnav" class="topnav">
-            <!-- <a href="#" title="Save Project to .json" onmouseup="saveProject();">Save Project</a>
-            <a href="#" title="Load Project from .json" onmouseup="loadProject();">Load Project</a>
-            <a href="#" onmouseup="threejsViewport.saveShapeSTEP();">Save STEP</a>
-            <a href="#" onmouseup="threejsViewport.saveShapeSTL();">Save STL</a>
-            <a href="#" onmouseup="threejsViewport.saveShapeOBJ();">Save OBJ</a> -->
-            <label id="fileInput" for="files" title="Import STEP, IGES, or (ASCII) STL from File">Import STEP/IGES/STL
-                <input id="files" name="files" type="file" accept=".iges,.step,.igs,.stp,.stl" multiple style="display:none;" oninput="loadFiles();"/>
+            <label id="fileInput" for="files" title="Import STEP, IGES, or (ASCII) STL from File">Import STEP/IGES/STL/DWG/DXF
+                <input id="files" name="files" type="file" accept=".dwg,.dxf,.iges,.step,.igs,.stp,.stl" multiple style="display:none;" oninput="loadFiles();"/>
             </label>
-            <!-- <a href="#" title="Clears the external step/iges/stl files stored in the project." onmouseup="clearExternalFiles();">Clear Imported Files</a> -->
         </div>
     </div>
 
@@ -57,9 +52,10 @@
             </button>
         </div>
     </div>
-    <p id="loading">loading wasm......</p>
+    <p id="loading">loading js......</p>
 
     <script type="text/javascript" src="./dist/app.js"> </script>
+    <script type="text/javascript" src="./lib/dwg/DwgApi.js"> </script>
 </body>
 
 </html>
