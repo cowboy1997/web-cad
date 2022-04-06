@@ -2,6 +2,7 @@
 
 #### 介绍
 在Web中实现CAD的功能，暂时实现简单的草图绘制。项目预览https://cowboy1997.github.io/web-cad/
+支持打开dwg/dxf/step/iges/stl
 
 #### 软件架构
 软件架构说明
@@ -21,3 +22,4 @@
 
 - [opencascade.js](https://github.com/donalffons/opencascade.js) (CAD Kernel)
 - [three.js](https://github.com/mrdoob/three.js/) (3D Rendering Engine)
+- [libredwg](https://github.com/LibreDWG/libredwg) (dwg)
