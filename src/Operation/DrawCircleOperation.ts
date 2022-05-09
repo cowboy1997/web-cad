@@ -25,7 +25,8 @@ export class DrawCircleOperation extends OperationBase {
         super.enter();
     }
     protected onMouseMove(event: MouseEvent) {
-        let v = occApp.scene.getIntersect(event);
+        super.onMouseMove(event); 
+        let v=this.movePoint == null ? occApp.scene.getIntersect(event) : this.movePoint;
         if (this.drawPoints.length > 0) {
             this.addTempCurve(this.drawPoints[0], v);
         }
@@ -36,7 +37,7 @@ export class DrawCircleOperation extends OperationBase {
             this.changeOperation();
             return;
         }
-        let mousePoint = occApp.scene.getIntersect(event);
+        let mousePoint=this.movePoint == null ? occApp.scene.getIntersect(event) : this.movePoint;
         if (this.drawPoints.length == 0) {
             this.drawPoints.push(mousePoint);
         }
@@ -48,7 +49,7 @@ export class DrawCircleOperation extends OperationBase {
             let edge = new occApp.oc.BRepBuilderAPI_MakeEdge_24(curve).Edge();
             if (!edge.IsNull()) {
                 let obj = new occShape();
-                obj.addTopoShapeToSence(edge);
+                obj.addTopoShapeToSence(edge,curve);
             }
             this.drawPoints = [];
         }

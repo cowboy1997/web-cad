@@ -1,6 +1,7 @@
 import { occApp } from "../occApp";
 import * as THREE from "three"
 import { OperationType } from "./OperationType";
+import { Vector3 } from "three";
 
 export class OperationBase {
 
@@ -14,6 +15,10 @@ export class OperationBase {
   public highlightedIndex: number = 0;
 
 
+  protected movePoint:Vector3;
+
+  public static showPointGeometry:THREE.BufferGeometry
+
 
   protected operationType: string;
   constructor() {
@@ -23,6 +28,15 @@ export class OperationBase {
     this.ListenerMouseMove = this.onMouseMove.bind(this);
     this.ListenerMouseUp = this.onMouseUp.bind(this);
     this.ListenerkeyDown = this.onKeyDown.bind(this);
+
+
+
+    OperationBase.showPointGeometry = new THREE.BufferGeometry();
+    OperationBase.showPointGeometry .setAttribute('position', new THREE.Float32BufferAttribute([], 3));
+    let material = new THREE.PointsMaterial({ color: 0x888888, size: 10 });
+    let showPoint = new THREE.Points(OperationBase.showPointGeometry , material);
+    showPoint.position
+    occApp.scene.scene.add(showPoint);
   }
 
 
@@ -73,7 +87,7 @@ export class OperationBase {
             // this.highlightedObj.material.color.setHex(0xffffff);
             this.highlightedIndex = newIndex;
             if (isLine) {
-              this.highlightedObj.highlightEdgeAtLineIndex(intersects[0].index);
+              this.movePoint= this.highlightedObj.highlightEdgeAtLineIndex(intersects[0].index,intersects[0].point);
               return;
             }
             else {
@@ -91,6 +105,8 @@ export class OperationBase {
             if (this.highlightedObj.clearHighlights) { this.highlightedObj.clearHighlights(); }
           }
           this.highlightedObj = null;
+          this.movePoint=null;
+          OperationBase.showPointGeometry.setFromPoints([]);
         }
       }
 

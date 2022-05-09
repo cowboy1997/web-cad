@@ -1,6 +1,8 @@
-import { TopoDS_Shape } from "opencascade.js/dist/opencascade.full";
+import { TopoDS_Edge, TopoDS_Shape } from "opencascade.js";
 import * as THREE from "three"
+import { Vector3 } from "three";
 import { occApp } from "./occApp";
+import { OperationBase } from "./Operation/OperationBase";
 
 
 export class faceData {
@@ -16,6 +18,7 @@ export class faceData {
 export class edgeData {
     vertex_coord: number[] = [];
     edge_index: number = 0;
+    topoEdge: TopoDS_Edge = null;
 }
 
 export class faceMetadata {
@@ -69,7 +72,7 @@ export class occShape {
     public mainObject: THREE.Group = new THREE.Group();
 
 
-    public addTopoShapeToSence(topoShape: TopoDS_Shape) {
+    public addTopoShapeToSence(topoShape: TopoDS_Shape,curve=null) {
 
         let MeshData = occShape.ShapeToMesh(topoShape);
         this.topoShape = topoShape;
@@ -154,6 +157,7 @@ export class occShape {
                 let edgeMetadata: any = {};
                 edgeMetadata.localEdgeIndex = edge.edge_index;
                 edgeMetadata.start = globalEdgeIndices.length;
+                edgeMetadata.topoEdge=edge.topoEdge
                 for (let i = 0; i < edge.vertex_coord.length - 3; i += 3) {
                     lineVertices.push(new THREE.Vector3(edge.vertex_coord[i],
                         edge.vertex_coord[i + 1],
@@ -178,8 +182,42 @@ export class occShape {
             line.name = "Model Edges";
             line.lineColors = lineColors;
             line.globalEdgeMetadata = globalEdgeMetadata;
-            line.highlightEdgeAtLineIndex = function (lineIndex) {
+            line.edgelist=edgelist;
+            line.curve=curve;
+            line.highlightEdgeAtLineIndex = function (lineIndex,point:Vector3) {
                 let edgeIndex = lineIndex >= 0 ? this.globalEdgeIndices[lineIndex] : lineIndex;
+
+
+                if (this.curve&&point) 
+                {
+                    let curve = this.curve.get()
+                    let start = new occApp.oc.gp_Pnt_1()
+                    curve.D0(curve.FirstParameter(), start);
+
+                    let t_start=new Vector3(start.X(),start.Y(),start.Z())
+
+                    if(t_start.distanceTo(point)<=20)
+                    {
+                        OperationBase.showPointGeometry.setAttribute('position', 
+                        new THREE.Float32BufferAttribute([start.X(),start.Y(),start.Z()], 3));
+                        return t_start;
+                    }
+
+                    let end = new occApp.oc.gp_Pnt_1()
+                    curve.D0(curve.LastParameter(), end);
+
+                    let t_end=new Vector3(end.X(),end.Y(),end.Z())
+
+                    if(t_end.distanceTo(point)<=20)
+                    {
+                        OperationBase.showPointGeometry.setAttribute('position', 
+                        new THREE.Float32BufferAttribute([end.X(),end.Y(),end.Z()], 3));
+                        return t_end;
+                    }
+                }
+
+
+
                 let startIndex = this.globalEdgeMetadata[edgeIndex].start;
                 let endIndex = this.globalEdgeMetadata[edgeIndex].end;
                 for (let i = 0; i < this.lineColors.length; i++) {
@@ -366,7 +404,8 @@ export class occShape {
                 if (fullShapeEdgeHashes2.hasOwnProperty(edgeHash)) {
                     let this_edge: edgeData = {
                         vertex_coord: [],
-                        edge_index: -1
+                        edge_index: -1,
+                        topoEdge:myEdge
                     };
 
                     let myP = oc.BRep_Tool.PolygonOnTriangulation_1(myEdge, myT, aLocation);
@@ -380,9 +419,7 @@ export class occShape {
                         this_edge.vertex_coord[(j * 3) + 1] = this_face.vertex_coord[((vertexIndex - 1) * 3) + 1];
                         this_edge.vertex_coord[(j * 3) + 2] = this_face.vertex_coord[((vertexIndex - 1) * 3) + 2];
                     }
-
                     this_edge.edge_index = fullShapeEdgeHashes[edgeHash];
-
                     edgeList.push(this_edge);
                 } else {
                     fullShapeEdgeHashes2[edgeHash] = edgeHash;
@@ -392,36 +429,7 @@ export class occShape {
             }
             triangulations.push(myT);
         }
-
-        //
-        // Scale each face's UVs to Worldspace and pack them into a 0-1 Atlas with potpack
-        // let padding = 2;
-        // for (let f = 0; f < uv_boxes.length; f++) { uv_boxes[f].w += padding; uv_boxes[f].h += padding; }
-        // let packing_stats = potpack(uv_boxes);
-        // for (let f = 0; f < uv_boxes.length; f++) {
-        //     let box = uv_boxes[f];
-        //     let this_face = facelist[box.index];
-        //     for (let q = 0; q < this_face.uv_coord.length / 2; q++) {
-        //         let x = this_face.uv_coord[(q * 2) + 0],
-        //             y = this_face.uv_coord[(q * 2) + 1];
-
-        //         x = ((x * (box.w - padding)) + (box.x + (padding * 0.5))) / Math.max(packing_stats.w, packing_stats.h);
-        //         y = ((y * (box.h - padding)) + (box.y + (padding * 0.5))) / Math.max(packing_stats.w, packing_stats.h);
-
-        //         this_face.uv_coord[(q * 2) + 0] = x;
-        //         this_face.uv_coord[(q * 2) + 1] = y;
-
-        //         //Visualize Packed UVs
-        //         //this_face.vertex_coord[(q * 3) + 0] = x * 100.0;
-        //         //this_face.vertex_coord[(q * 3) + 1] = y * 100.0;
-        //         //this_face.vertex_coord[(q * 3) + 2] = 0.0;
-        //     }
-        // }
-
-        // Nullify Triangulations between runs so they're not stored in the cache
         for (let i = 0; i < triangulations.length; i++) { triangulations[i].Nullify(); }
-
-
         const aEdgeExplorer = new oc.TopExp_Explorer_2(shape, oc.TopAbs_ShapeEnum.TopAbs_EDGE as any, oc.TopAbs_ShapeEnum.TopAbs_SHAPE as any);
         for (; aEdgeExplorer.More(); aEdgeExplorer.Next()) {
             let myEdge = oc.TopoDS.Edge_1(aEdgeExplorer.Current());
@@ -429,7 +437,8 @@ export class occShape {
             if (!fullShapeEdgeHashes2.hasOwnProperty(edgeHash)) {
                 let this_edge = {
                     vertex_coord: [],
-                    edge_index: -1
+                    edge_index: -1,
+                    topoEdge:myEdge
                 };
                 let aLocation = new oc.TopLoc_Location_1();
                 let adaptorCurve = new oc.BRepAdaptor_Curve_2(myEdge);
@@ -444,7 +453,6 @@ export class occShape {
                 }
                 this_edge.edge_index = fullShapeEdgeHashes[edgeHash];
                 fullShapeEdgeHashes2[edgeHash] = edgeHash;
-
                 edgeList.push(this_edge);
             }
         }

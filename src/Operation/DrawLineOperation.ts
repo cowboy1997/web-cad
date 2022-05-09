@@ -31,8 +31,9 @@ export class DrawWallOperation extends OperationBase {
 
     }
     protected onMouseMove(event: MouseEvent) {
-        let v = occApp.scene.getIntersect(event);
+        super.onMouseMove(event); 
         if (this.drawPoints.length > 0) {
+            let v=this.movePoint == null ? occApp.scene.getIntersect(event) : this.movePoint;
             this.addTempCurve(this.drawPoints[0], v);
         }
     }
@@ -42,7 +43,7 @@ export class DrawWallOperation extends OperationBase {
             this.changeOperation();
             return;
         }
-        let mousePoint = occApp.scene.getIntersect(event);
+        let mousePoint=this.movePoint == null ? occApp.scene.getIntersect(event) : this.movePoint;
         if (this.drawPoints.length == 0) {
             this.drawPoints.push(mousePoint);
         }
@@ -54,7 +55,7 @@ export class DrawWallOperation extends OperationBase {
             let edge = new occApp.oc.BRepBuilderAPI_MakeEdge_24(Curve).Edge();
             if (!edge.IsNull()) {
                 let obj = new occShape();
-                obj.addTopoShapeToSence(edge);
+                obj.addTopoShapeToSence(edge,Curve);
             }
             this.drawPoints = [];
             this.drawPoints.push(mousePoint);

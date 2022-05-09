@@ -26,8 +26,9 @@ export class DrawRectOperation extends OperationBase {
         super.enter();
     }
     protected onMouseMove(event: MouseEvent) {
-        let v = occApp.scene.getIntersect(event);
+        super.onMouseMove(event); 
         if (this.drawPoints.length > 0) {
+            let v=this.movePoint == null ? occApp.scene.getIntersect(event) : this.movePoint;
             this.addTempCurve(this.drawPoints[0], v);
         }
     }
@@ -37,7 +38,7 @@ export class DrawRectOperation extends OperationBase {
             this.changeOperation();
             return;
         }
-        let mousePoint = occApp.scene.getIntersect(event);
+        let mousePoint=this.movePoint == null ? occApp.scene.getIntersect(event) : this.movePoint;
         if (this.drawPoints.length == 0) {
             this.drawPoints.push(mousePoint);
         }
@@ -49,15 +50,10 @@ export class DrawRectOperation extends OperationBase {
             let P1 = new occApp.oc.gp_Pnt_3(mousePoint.x,this.drawPoints[0].y,0);
             let P2 = new occApp.oc.gp_Pnt_3(mousePoint.x, mousePoint.y, mousePoint.z);
             let P3 =  new occApp.oc.gp_Pnt_3(this.drawPoints[0].x,mousePoint.y,0);
-            let edge0 = this.creatEdge(P0,P1);
-            let edge1 = this.creatEdge(P1,P2);
-            let edge2 = this.creatEdge(P2,P3);
-            let edge3 = this.creatEdge(P3,P0);
-            let rect =new occApp.oc. BRepBuilderAPI_MakeWire_5(edge0.Edge(),edge1.Edge(),edge2.Edge(),edge3.Edge()).Shape()
-            if (!rect.IsNull()) {
-                let obj = new occShape();
-                obj.addTopoShapeToSence(rect);
-            }
+            this.creatEdge(P0,P1);
+            this.creatEdge(P1,P2);
+            this.creatEdge(P2,P3);
+            this.creatEdge(P3,P0);
             this.drawPoints = [];
         }
     }
@@ -66,8 +62,9 @@ export class DrawRectOperation extends OperationBase {
     {
         let aSegment = new occApp.oc.GC_MakeSegment_1(P0, P1).Value();
         let curve=  new occApp.oc.Handle_Geom_Curve_2(aSegment.get());
-        let edge = new occApp.oc.BRepBuilderAPI_MakeEdge_24(curve);
-        return edge;
+        let edge = new occApp.oc.BRepBuilderAPI_MakeEdge_24(curve).Edge();
+        let obj = new occShape();
+        obj.addTopoShapeToSence(edge,curve);
     }
 
 

@@ -25,7 +25,8 @@ export class DrawArcOfCircleOperation extends OperationBase {
         super.enter();
     }
     protected onMouseMove(event: MouseEvent) {
-        let v = occApp.scene.getIntersect(event);
+        super.onMouseMove(event); 
+        let v=this.movePoint == null ? occApp.scene.getIntersect(event) : this.movePoint;
         if (this.drawPoints.length == 1) {
             this.addTempLine(this.drawPoints[0], v);
         }
@@ -40,7 +41,7 @@ export class DrawArcOfCircleOperation extends OperationBase {
             this.changeOperation();
             return;
         }
-        let mousePoint = occApp.scene.getIntersect(event);
+        let mousePoint=this.movePoint == null ? occApp.scene.getIntersect(event) : this.movePoint;
         if (this.drawPoints.length == 0) {
             this.drawPoints.push(mousePoint);
         }
@@ -57,7 +58,7 @@ export class DrawArcOfCircleOperation extends OperationBase {
             this.tempGeometry.setFromPoints(occShape.edgeOfVector3(edge));
             if (!edge.IsNull()) {
                 let obj = new occShape();
-                obj.addTopoShapeToSence(edge);
+                obj.addTopoShapeToSence(edge,curve);
             }
             this.drawPoints = [];
         }
